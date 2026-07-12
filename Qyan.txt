@@ -1,0 +1,117 @@
+
+# Online IDE - Code Editor, Compiler, Interpreter
+
+pri// Initialize Lucide Icons
+lucide.createIcons();
+
+// Set Pre-filled cities
+function setCity(elementId, cityName) {
+  document.getElementById(elementId).value = cityName;
+}
+
+// Toggle Return Date
+function toggleReturnDate() {
+  const isRoundTripChecked = document.getElementById("isRoundTrip").checked;
+  const returnDateInput = document.getElementById("returnDate");
+  const returnLabel = document.getElementById("returnLabel");
+
+  if (isRoundTripChecked) {
+    returnDateInput.disabled = false;
+    returnDateInput.required = true;
+    returnDateInput.classList.remove(
+      "bg-slate-100",
+      "text-slate-300",
+      "border-slate-200",
+      "cursor-not-allowed"
+    );
+    returnDateInput.classList.add(
+      "bg-white",
+      "text-slate-900",
+      "border-slate-300"
+    );
+    returnLabel.classList.remove("text-slate-300");
+    returnLabel.classList.add("text-slate-500");
+  } else {
+    returnDateInput.disabled = true;
+    returnDateInput.required = false;
+    returnDateInput.value = "";
+    returnDateInput.classList.remove(
+      "bg-white",
+      "text-slate-900",
+      "border-slate-300"
+    );
+    returnDateInput.classList.add(
+      "bg-slate-100",
+      "text-slate-300",
+      "border-slate-200",
+      "cursor-not-allowed"
+    );
+    returnLabel.classList.remove("text-slate-500");
+    returnLabel.classList.add("text-slate-300");
+  }
+}
+
+// Form Submit
+document
+  .getElementById("ticket-inquiry-form")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const name = document.getElementById("custName").value;
+    const phone = document.getElementById("custPhone").value;
+    const from = document.getElementById("deptCity").value;
+    const to = document.getElementById("destCity").value;
+    const deptDate = document.getElementById("deptDate").value;
+    const returnDate = document.getElementById("returnDate").value;
+    const isRoundTrip = document.getElementById("isRoundTrip").checked;
+    const tClass = document.getElementById("ticketClass").value;
+    const passCount = document.getElementById("passengers").value;
+
+    const whatsappText = `✈️ *Flight Booking Inquiry - Sunlight Air Travel*
+
+👤 Name: ${name}
+📞 Phone: ${phone}
+📍 From: ${from}
+📍 To: ${to}
+📅 Departure: ${deptDate}
+🔄 Trip: ${
+      isRoundTrip
+        ? "Round Trip (Return: " + returnDate + ")"
+        : "One Way"
+    }
+💺 Class: ${tClass}
+👥 Passengers: ${passCount}`;
+
+    const whatsappUrl =
+      `https://wa.me/923333600562?text=` +
+      encodeURIComponent(whatsappText);
+
+    const emailRecipient = "sunlightairtravel@gmail.com";
+    const emailSubject = `Flight Ticket Inquiry: ${from} to ${to}`;
+
+    const emailBody = `Passenger Name: ${name}
+Phone: ${phone}
+
+From: ${from}
+To: ${to}
+Departure: ${deptDate}
+Return: ${isRoundTrip ? returnDate : "N/A"}
+Class: ${tClass}
+Passengers: ${passCount}`;
+
+    const emailUrl =
+      `mailto:${emailRecipient}?subject=` +
+      encodeURIComponent(emailSubject) +
+      "&body=" +
+      encodeURIComponent(emailBody);
+
+    document.getElementById("modal-whatsapp-btn").href = whatsappUrl;
+    document.getElementById("modal-email-btn").href = emailUrl;
+
+    document.getElementById("booking-modal").classList.remove("hidden");
+  });
+
+// Close Modal
+function closeModal() {
+  document.getElementById("booking-modal").classList.add("hidden");
+}nt('Welcome to Online IDE!! Happy Coding :)')
